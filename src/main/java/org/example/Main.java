@@ -25,12 +25,7 @@ public class Main {
         driver.manage().timeouts().implicitlyWait(Duration.ofSeconds(10));
         driver.manage().window().maximize();
         driver.get("http://pl.battleship-game.org/id33781256/classic");
-
-
         WebElement startButton = driver.findElement(By.xpath("//div[@class='battlefield-start-button']"));
-        //List<WebElement>  = driver.findElements(By.xpath("//div[@class='battlefield battlefield__rival']"));
-       // WebElement enemyBoard  = driver.findElement(By.xpath("//div[@class='battlefield battlefield__rival']"));
-        WebElement enemyBoardOnWait  = driver.findElement(By.xpath("//div[@class='battlefield battlefield__rival battlefield__wait']"));
         startButton.click();
 
 
