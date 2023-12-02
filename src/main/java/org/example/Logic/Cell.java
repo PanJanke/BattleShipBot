@@ -1,11 +1,11 @@
 package org.example.Logic;
 
-public class Tile {
+public class Cell {
 
     private boolean empty;
     private Integer probabilityOfHit;
 
-    public Tile(boolean empty, Integer probabilityOfHit) {
+    public Cell(boolean empty, Integer probabilityOfHit) {
         this.empty = empty;
         this.probabilityOfHit = probabilityOfHit;
     }
