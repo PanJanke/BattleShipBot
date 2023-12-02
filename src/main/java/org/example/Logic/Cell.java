@@ -1,7 +1,6 @@
 package org.example.Logic;
 
 public class Cell {
-
     private boolean empty;
     private Integer probabilityOfHit;
 

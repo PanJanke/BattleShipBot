@@ -1,11 +1,13 @@
 package org.example.Pages;
 
+import org.example.Logic.Coordinates;
 import org.example.utils.DriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Random;
 
@@ -58,5 +60,17 @@ public class MainPage {
 
     public int sinkedShipsNumber() {
         return sinkedList.size();
+    }
+
+    public List<Coordinates> getCoordinatesOfEmptyCells() {
+        List<Coordinates> coordinatesList = new ArrayList<>();
+
+        for (WebElement element : possibleShotList) {
+            int xCoord = Integer.parseInt(element.getAttribute("data-x"));
+            int yCoord = Integer.parseInt(element.getAttribute("data-y"));
+            Coordinates coordinates = new Coordinates(xCoord, yCoord);
+            coordinatesList.add(coordinates);
+        }
+        return coordinatesList;
     }
 }
