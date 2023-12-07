@@ -1,16 +1,19 @@
 package org.example;
 
+import org.example.Logic.Coordinates;
 import org.example.Pages.MainPage;
 
 public class Start {
     public static void main(String[] args) {
+
+
 
         MainPage mainPage = new MainPage("http://pl.battleship-game.org/id33781256/classic");
         mainPage.startGame();
 
         int hitCounter = mainPage.hittedCellsNumber();
         int sinkedCounter = mainPage.sinkedShipsNumber();
-
+        boolean chasing = false;
 
         while (true) {
             if (mainPage.IsEnemyTurn()) {
@@ -22,14 +25,18 @@ public class Start {
                 }
             } else {
 
-                mainPage.hitRandomCell();
+                Coordinates randomCellCoord =  mainPage.getRandomCell();
+                System.out.println("strzelam w : "+randomCellCoord.getxCoord() + " " + randomCellCoord.getyCoord());
+                mainPage.hitCell(randomCellCoord);
+
                 mainPage.reinitializeElements();
 
                 int hitCounterAfterShot = mainPage.hittedCellsNumber();
                 int sinkedCounterAfterShot = mainPage.sinkedShipsNumber();
 
 
-                if (hitCounterAfterShot > hitCounter) {
+                if (hitCounterAfterShot > hitCounter ) {
+                    chasing=true;
                     hitCounter = hitCounterAfterShot;
                     System.out.println("Trafiony");
 

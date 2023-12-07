@@ -52,10 +52,25 @@ public class MainPage {
         return hittedCellsList.size();
     }
 
-    public void hitRandomCell() {
+    public Coordinates getRandomCell() {
         Random random = new Random();
         int size = possibleShotList.size();
-        possibleShotList.get(random.nextInt(size)).click();
+        WebElement randomCell = possibleShotList.get(random.nextInt(size));
+        int xCoord = Integer.parseInt(randomCell.getAttribute("data-x"));
+        int yCoord = Integer.parseInt(randomCell.getAttribute("data-y"));
+        return new Coordinates(xCoord, yCoord);
+    }
+
+    public void hitCell(Coordinates coordinates) {
+        for (WebElement element : possibleShotList) {
+            int x = Integer.parseInt(element.getAttribute("data-x"));
+            int y = Integer.parseInt(element.getAttribute("data-y"));
+            if (x == coordinates.getxCoord() && y == coordinates.getyCoord()) {
+                element.click();
+                return;
+            }
+        }
+        System.out.println("element nie znaleziony na liscie");
     }
 
     public int sinkedShipsNumber() {
