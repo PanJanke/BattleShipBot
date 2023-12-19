@@ -1,7 +1,7 @@
-package org.example.Pages;
+package pl.jano.Pages;
 
-import org.example.Logic.Coordinates;
-import org.example.utils.DriverFactory;
+import pl.jano.Logic.Coordinates;
+import pl.jano.utils.DriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
@@ -52,7 +52,7 @@ public class MainPage {
         return hittedCellsList.size();
     }
 
-    public Coordinates getRandomCell() {
+    public Coordinates getRandomCellCoord() {
         Random random = new Random();
         int size = possibleShotList.size();
         WebElement randomCell = possibleShotList.get(random.nextInt(size));
@@ -86,6 +86,7 @@ public class MainPage {
             Coordinates coordinates = new Coordinates(xCoord, yCoord);
             coordinatesList.add(coordinates);
         }
+        System.out.println("rozmiar listy=" +coordinatesList.size());
         return coordinatesList;
     }
 }

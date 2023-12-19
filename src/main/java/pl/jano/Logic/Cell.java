@@ -1,4 +1,4 @@
-package org.example.Logic;
+package pl.jano.Logic;
 
 public class Cell {
     private boolean empty;
