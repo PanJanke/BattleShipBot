@@ -25,7 +25,9 @@ public class Start {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
-            } else {
+            }
+
+            else {
 
                 int sinkedCounter = mainPage.sinkedShipsNumber();
                 Coordinates nextTarget = null;
@@ -36,12 +38,11 @@ public class Start {
 
                     //nieustalono osi -> lista posiada tylko jeden element!!!
                     if (!shipChaser.getPivotSetted()) {
-                        System.out.println("Lista powwina byc 1: " + shipChaser.getHittedCells().size());
+                        System.out.println("BLAD!!!!!Lista powwina byc 1: " + shipChaser.getHittedCells().size());
 
                         Coordinates hittedCell = shipChaser.getHittedCells().get(0);
                         Coordinates direction = enemyBoard.getLongestEmptyDirection(hittedCell);
-                        hittedCell.addCoordinates(direction);
-                        nextTarget = hittedCell;
+                        nextTarget = Coordinates.addCoordinates(hittedCell,direction);
 
                     }
 
@@ -51,8 +52,7 @@ public class Start {
                         Coordinates direction = enemyBoard.getLongestEmptyDirectionInOneAxis(candidates,shipChaser.getHorizontal());
                         /// TESTY DO choose Candidate
                         Coordinates candidate = shipChaser.chooseCandidate(candidates,direction);
-
-
+                        nextTarget = Coordinates.addCoordinates(candidate,direction);
 
                     }
 
@@ -84,10 +84,10 @@ public class Start {
                     System.out.print(" Zatopiony!!");
 
                 }
+
+                enemyBoard.setEmptyCells(mainPage.getCoordinatesOfEmptyCells());
             }
 
-            enemyBoard.setEmptyCells(mainPage.getCoordinatesOfEmptyCells());
-            enemyBoard.printOutBoard();
         }
 
     }

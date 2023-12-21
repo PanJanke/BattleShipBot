@@ -31,7 +31,7 @@ public class Coordinates {
     public static Coordinates addCoordinates(Coordinates coord1, Coordinates coord2) {
         int newX = coord1.xCoord + coord2.xCoord;
         int newY = coord1.yCoord + coord2.yCoord;
-        return new Coordinates(newX, newY);
+        return new Coordinates(newY, newX);
     }
 
     @Override

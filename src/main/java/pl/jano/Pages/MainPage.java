@@ -58,7 +58,7 @@ public class MainPage {
         WebElement randomCell = possibleShotList.get(random.nextInt(size));
         int xCoord = Integer.parseInt(randomCell.getAttribute("data-x"));
         int yCoord = Integer.parseInt(randomCell.getAttribute("data-y"));
-        return new Coordinates(xCoord, yCoord);
+        return new Coordinates(yCoord, xCoord);
     }
 
     public void hitCell(Coordinates coordinates) {
