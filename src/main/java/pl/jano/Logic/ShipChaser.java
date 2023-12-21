@@ -1,9 +1,6 @@
 package pl.jano.Logic;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
+import java.util.*;
 
 public class ShipChaser {
     private boolean chase;
@@ -20,6 +17,10 @@ public class ShipChaser {
         this.horizontal = null;
         this.pivotSetted = false;
         this.hittedCells = new ArrayList<>();
+    }
+
+    public List<Coordinates> getHittedCells() {
+        return hittedCells;
     }
 
     public boolean isChase() {
@@ -59,7 +60,7 @@ public class ShipChaser {
     }
 
     public void checkPossiblePivot() {
-        if (hittedCells.size() < 2)
+        if (hittedCells.size() != 2)
             return;
 
         Map<Integer, Integer> xCoordMap = new HashMap<>();
@@ -84,10 +85,49 @@ public class ShipChaser {
             }
         }
         pivotSetted = false;
+    }
 
+    public Coordinates chooseCandidate(Coordinates[] candidates, Coordinates direction) {
+        Coordinates candidateA = candidates[0];
+        Coordinates candidateB = candidates[1];
+        if (Coordinates.manhattanDistance(Coordinates.addCoordinates(candidateA,direction), candidateB) > Coordinates.manhattanDistance(candidateA,candidateB))
+            return candidateA;
+        else
+            return candidateB;
+    }
+
+    public Coordinates[] getEdgedCoordinatesFromList() {
+        if (horizontal)
+            Collections.sort(hittedCells, Comparator.comparingInt(Coordinates::getxCoord));
+        else
+            Collections.sort(hittedCells, Comparator.comparingInt(Coordinates::getyCoord));
+
+        List<Coordinates> result = new ArrayList<>();
+        result.add(hittedCells.getFirst());
+        result.add(hittedCells.getLast());
+
+        return result.toArray(new Coordinates[0]);
+    }
+
+    public void addHittedCell(Coordinates hit) {
+        hittedCells.add(hit);
     }
 
 
+
+
+    /*
+    *   //POLUJE DALEJ
+            } else if(shipChaser.isChase()){
+                //ustalono oś
+                if(shipChaser.getPivotSetted()){
+
+                }
+                //dalej nieustalono osi
+                else{
+
+                }
+    * */
 
 
 }

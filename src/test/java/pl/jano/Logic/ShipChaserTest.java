@@ -18,14 +18,47 @@ class ShipChaserTest {
         shipChaser = new ShipChaser(false, 5);
     }
 
+
+
+    @Test
+    void EdgedValuesTestVertical(){
+        shipChaser.setHorizontal(false);
+        List<Coordinates> hittedCells = new ArrayList<>(Arrays.asList(
+                new Coordinates(3, 3),
+                new Coordinates(4, 3),
+                new Coordinates(5, 3),
+                new Coordinates(6, 3)
+        ));
+        shipChaser.setHittedCells(hittedCells);
+
+        Coordinates[] result = shipChaser.getEdgedCoordinatesFromList();
+        result[0].print();
+        result[1].print();
+        assertEquals(new Coordinates(3,3),result[0]);
+        assertEquals(new Coordinates(6,3),result[1]);
+    }
+
+    @Test
+    void EdgedValuesTestHorizontal(){
+        shipChaser.setHorizontal(true);
+        List<Coordinates> hittedCells = new ArrayList<>(Arrays.asList(
+                new Coordinates(6, 2),
+                new Coordinates(6, 3),
+                new Coordinates(6, 4),
+                new Coordinates(6, 1)
+        ));
+        shipChaser.setHittedCells(hittedCells);
+
+        Coordinates[] result = shipChaser.getEdgedCoordinatesFromList();
+        result[0].print();
+        result[1].print();
+        assertEquals(new Coordinates(6,1),result[0]);
+        assertEquals(new Coordinates(6,4),result[1]);
+    }
+
     @Test
     void checkExistedVerticalPivot() {
         List<Coordinates> hittedCells = new ArrayList<>(Arrays.asList(
-                new Coordinates(0, 0),
-                new Coordinates(1, 1),
-                new Coordinates(2, 2),
-                new Coordinates(3, 3),
-                new Coordinates(3, 4),
                 new Coordinates(3, 5),
                 new Coordinates(3, 6)
         ));
@@ -37,19 +70,12 @@ class ShipChaserTest {
 
     }
 
-
     @Test
     void checkExistedHorizontalPivot() {
         List<Coordinates> hittedCells = new ArrayList<>(Arrays.asList(
-                new Coordinates(0, 0),
-                new Coordinates(1, 1),
-                new Coordinates(2, 2),
-                new Coordinates(3, 3),
                 new Coordinates(4, 3),
-                new Coordinates(5, 3),
-                new Coordinates(6, 3)
+                new Coordinates(5, 3)
         ));
-
         shipChaser.setHittedCells(hittedCells);
         shipChaser.checkPossiblePivot();
         assertTrue(shipChaser.getHorizontal());

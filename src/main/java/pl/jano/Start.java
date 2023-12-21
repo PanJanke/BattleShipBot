@@ -8,13 +8,11 @@ import pl.jano.Pages.MainPage;
 public class Start {
     public static void main(String[] args) {
 
-
         MainPage mainPage = new MainPage("http://pl.battleship-game.org/id33781256/classic");
         mainPage.startGame();
 
         EnemyBoard enemyBoard = new EnemyBoard();
-        ShipChaser shipChaser = new ShipChaser(false,5);
-
+        ShipChaser shipChaser = new ShipChaser(false, 5);
 
 
         while (true) {
@@ -27,58 +25,72 @@ public class Start {
                 } catch (InterruptedException e) {
                     throw new RuntimeException(e);
                 }
+            } else {
 
-                //POLUJE DALEJ
-            } else if(shipChaser.isChase()){
-                //ustalono oś
-                if(shipChaser.getPivotSetted()){
-
-                }
-                //dalej nieustalono osi
-                else{
-
-                }
-            }
-
-                //STRZELAM LOSOWO
-            else {
-
-
-                //pobieram informacje przed strzałem
                 int sinkedCounter = mainPage.sinkedShipsNumber();
+                Coordinates nextTarget = null;
 
-                Coordinates randomCellCoord = mainPage.getRandomCellCoord();
-                System.out.println("strzelam w : " + randomCellCoord.getxCoord() + " " + randomCellCoord.getyCoord());
-                mainPage.hitCell(randomCellCoord);
 
-                //ponowna reinicjalizacja elementów
+                //POLUJE -> wybieram potencjalny cel
+                if (shipChaser.isChase()) {
+
+                    //nieustalono osi -> lista posiada tylko jeden element!!!
+                    if (!shipChaser.getPivotSetted()) {
+                        System.out.println("Lista powwina byc 1: " + shipChaser.getHittedCells().size());
+
+                        Coordinates hittedCell = shipChaser.getHittedCells().get(0);
+                        Coordinates direction = enemyBoard.getLongestEmptyDirection(hittedCell);
+                        hittedCell.addCoordinates(direction);
+                        nextTarget = hittedCell;
+
+                    }
+
+                    //ustalono oś
+                    else {
+                        Coordinates[] candidates = shipChaser.getEdgedCoordinatesFromList();
+                        Coordinates direction = enemyBoard.getLongestEmptyDirectionInOneAxis(candidates,shipChaser.getHorizontal());
+                        /// TESTY DO choose Candidate
+                        Coordinates candidate = shipChaser.chooseCandidate(candidates,direction);
+
+
+
+                    }
+
+                }
+
+                //CEL losowy
+                else {
+                    nextTarget = mainPage.getRandomCellCoord();
+                }
+
+                System.out.println("strzelam w : " + nextTarget.getxCoord() + " " + nextTarget.getyCoord());
+                mainPage.hitCell(nextTarget);
                 mainPage.reinitializeElements();
 
 
-                //BLOK SPRAWDZAJĄCY CZY TRAFIŁEM ==wciaz moja tura
-                if(mainPage.IsEnemyTurn()){
+                if (mainPage.IsEnemyTurn()) {
                     System.out.println("pudło - wychodzę z pętli");
                     continue;
-                }
-
-
-                else{
+                } else {
                     shipChaser.setChase(true);
+                    shipChaser.addHittedCell(nextTarget);
+                    shipChaser.checkPossiblePivot();
                 }
 
                 //pobieram informacje po strzale
                 int sinkedCounterAfterShot = mainPage.sinkedShipsNumber();
-                    if (sinkedCounterAfterShot > sinkedCounter) {
-                        shipChaser.setChase(false);
-                        System.out.print(" Zatopiony!!");
+                if (sinkedCounterAfterShot > sinkedCounter) {
+                    shipChaser = new ShipChaser(false, 5);
+                    System.out.print(" Zatopiony!!");
 
-                    }
                 }
-
-                enemyBoard.setEmptyCells(mainPage.getCoordinatesOfEmptyCells());
-                enemyBoard.printOutBoard();
-
             }
+
+            enemyBoard.setEmptyCells(mainPage.getCoordinatesOfEmptyCells());
+            enemyBoard.printOutBoard();
         }
+
     }
+
+}
 

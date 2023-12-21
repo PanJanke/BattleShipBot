@@ -4,6 +4,11 @@ import java.util.Arrays;
 import java.util.List;
 
 public class EnemyBoard {
+
+    private static final Coordinates north = new Coordinates(-1, 0);
+    private static final Coordinates south = new Coordinates(1, 0);
+    private static final Coordinates east = new Coordinates(0, 1);
+    private static final Coordinates west = new Coordinates(0, -1);
     private static final int rows = 10;
     private static final int cols = 10;
 
@@ -70,11 +75,7 @@ public class EnemyBoard {
 
     }
 
-    private Coordinates getLongestEmptyDirection(Coordinates start) {
-        Coordinates north = new Coordinates(-1, 0);
-        Coordinates south = new Coordinates(1, 0);
-        Coordinates east = new Coordinates(0, 1);
-        Coordinates west = new Coordinates(0, -1);
+    public Coordinates getLongestEmptyDirection(Coordinates start) {
 
         int maxEmptyCount = 0;
         Coordinates longestEmptyDirection = null;
@@ -90,11 +91,30 @@ public class EnemyBoard {
         return longestEmptyDirection;
     }
 
-    public int countEmptyCellsInDirection(Coordinates start, Coordinates direction) {
-        int emptyCount = 0;
+    public Coordinates getLongestEmptyDirectionInOneAxis(Coordinates[] candidates, boolean horizontal) {
+        int maxEmptyCount = 0;
+        Coordinates longestEmptyDirection = horizontal ? east : north; // Set a default direction
+        for (Coordinates start : candidates) {
+            for (Coordinates direction : horizontal ? Arrays.asList(east, west) : Arrays.asList(north, south)) {
+                int emptyCount = countEmptyCellsInDirection(start, direction);
+                if (emptyCount > maxEmptyCount) {
+                    System.out.println("xxx");
+                    maxEmptyCount = emptyCount;
+                    longestEmptyDirection = direction;
+                }
+            }
+        }
 
-        while (areCoordsCorrect(start) && isEmpty(start)) {
-            start.addCoordinates(direction);
+        return longestEmptyDirection;
+    }
+
+
+    private int countEmptyCellsInDirection(Coordinates start, Coordinates direction) {
+        int emptyCount = 0;
+        Coordinates iterator = new Coordinates(start.getyCoord(), start.getxCoord());
+
+        while (areCoordsCorrect(iterator) && isEmpty(iterator)) {
+            iterator.addCoordinates(direction);
             emptyCount++;
         }
 
