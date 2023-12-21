@@ -1,5 +1,6 @@
 package pl.jano.Logic;
 
+import org.checkerframework.checker.units.qual.C;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 
@@ -19,6 +20,20 @@ class ShipChaserTest {
     }
 
 
+    @Test
+    void chooseCandidate(){
+        Coordinates[] candidates = {
+                new Coordinates(1, 3),
+                new Coordinates(2, 3)
+        };
+        Coordinates direction  = new Coordinates(1,0);
+
+        Coordinates result = shipChaser.chooseCandidate(candidates,direction);
+        assertEquals(new Coordinates(2,3),result);
+
+
+    }
+
 
     @Test
     void EdgedValuesTestVertical(){
@@ -32,8 +47,6 @@ class ShipChaserTest {
         shipChaser.setHittedCells(hittedCells);
 
         Coordinates[] result = shipChaser.getEdgedCoordinatesFromList();
-        result[0].print();
-        result[1].print();
         assertEquals(new Coordinates(3,3),result[0]);
         assertEquals(new Coordinates(6,3),result[1]);
     }

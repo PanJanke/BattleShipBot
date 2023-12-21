@@ -13,7 +13,7 @@ public class EnemyBoard {
     private static final int cols = 10;
 
 
-    private Cell[][] board;
+    private final Cell[][] board;
 
     public EnemyBoard() {
         this.board = new Cell[rows][cols];
@@ -97,9 +97,6 @@ public class EnemyBoard {
         for (Coordinates start : candidates) {
             for (Coordinates direction : horizontal ? Arrays.asList(east, west) : Arrays.asList(north, south)) {
                 int emptyCount = countEmptyCellsInDirection(start, direction);
-                System.out.println(emptyCount);
-                start.print();
-                direction.print();
                 if (emptyCount > maxEmptyCount) {
                     maxEmptyCount = emptyCount;
                     longestEmptyDirection = direction;

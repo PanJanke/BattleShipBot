@@ -90,6 +90,7 @@ public class ShipChaser {
     public Coordinates chooseCandidate(Coordinates[] candidates, Coordinates direction) {
         Coordinates candidateA = candidates[0];
         Coordinates candidateB = candidates[1];
+        candidateB.print();
         if (Coordinates.manhattanDistance(Coordinates.addCoordinates(candidateA,direction), candidateB) > Coordinates.manhattanDistance(candidateA,candidateB))
             return candidateA;
         else
@@ -98,9 +99,9 @@ public class ShipChaser {
 
     public Coordinates[] getEdgedCoordinatesFromList() {
         if (horizontal)
-            Collections.sort(hittedCells, Comparator.comparingInt(Coordinates::getxCoord));
+            hittedCells.sort(Comparator.comparingInt(Coordinates::getxCoord));
         else
-            Collections.sort(hittedCells, Comparator.comparingInt(Coordinates::getyCoord));
+            hittedCells.sort(Comparator.comparingInt(Coordinates::getyCoord));
 
         List<Coordinates> result = new ArrayList<>();
         result.add(hittedCells.getFirst());
@@ -116,18 +117,6 @@ public class ShipChaser {
 
 
 
-    /*
-    *   //POLUJE DALEJ
-            } else if(shipChaser.isChase()){
-                //ustalono oś
-                if(shipChaser.getPivotSetted()){
-
-                }
-                //dalej nieustalono osi
-                else{
-
-                }
-    * */
 
 
 }

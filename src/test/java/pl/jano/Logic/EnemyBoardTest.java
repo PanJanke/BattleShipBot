@@ -66,7 +66,6 @@ class EnemyBoardTest {
         );
 
         enemyBoard.setNonEmptyCells(emptyCells);
-        enemyBoard.printOutBoard();
 
         List<Coordinates> candidates = new ArrayList<>();
         candidates.add(new Coordinates(6, 3));

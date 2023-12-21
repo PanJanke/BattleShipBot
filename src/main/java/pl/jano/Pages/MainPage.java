@@ -71,6 +71,7 @@ public class MainPage {
             }
         }
         System.out.println("element nie znaleziony na liscie");
+
     }
 
     public int sinkedShipsNumber() {
@@ -83,10 +84,9 @@ public class MainPage {
         for (WebElement element : possibleShotList) {
             int xCoord = Integer.parseInt(element.getAttribute("data-x"));
             int yCoord = Integer.parseInt(element.getAttribute("data-y"));
-            Coordinates coordinates = new Coordinates(xCoord, yCoord);
+            Coordinates coordinates = new Coordinates(yCoord, xCoord);
             coordinatesList.add(coordinates);
         }
-        System.out.println("rozmiar listy=" +coordinatesList.size());
         return coordinatesList;
     }
 }

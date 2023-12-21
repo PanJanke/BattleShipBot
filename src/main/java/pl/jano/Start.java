@@ -1,9 +1,13 @@
 package pl.jano;
 
+import org.checkerframework.checker.units.qual.C;
 import pl.jano.Logic.ShipChaser;
 import pl.jano.Logic.Coordinates;
 import pl.jano.Logic.EnemyBoard;
 import pl.jano.Pages.MainPage;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class Start {
     public static void main(String[] args) {
@@ -13,6 +17,9 @@ public class Start {
 
         EnemyBoard enemyBoard = new EnemyBoard();
         ShipChaser shipChaser = new ShipChaser(false, 5);
+
+        List<Coordinates> setUpList = new ArrayList<>();
+        setUpList.add(new Coordinates(1,3));
 
 
         while (true) {
@@ -38,8 +45,7 @@ public class Start {
 
                     //nieustalono osi -> lista posiada tylko jeden element!!!
                     if (!shipChaser.getPivotSetted()) {
-                        System.out.println("BLAD!!!!!Lista powwina byc 1: " + shipChaser.getHittedCells().size());
-
+                        System.out.println("POwinenem tu wejsc tylko RAZ");
                         Coordinates hittedCell = shipChaser.getHittedCells().get(0);
                         Coordinates direction = enemyBoard.getLongestEmptyDirection(hittedCell);
                         nextTarget = Coordinates.addCoordinates(hittedCell,direction);
@@ -49,8 +55,15 @@ public class Start {
                     //ustalono oś
                     else {
                         Coordinates[] candidates = shipChaser.getEdgedCoordinatesFromList();
-                        Coordinates direction = enemyBoard.getLongestEmptyDirectionInOneAxis(candidates,shipChaser.getHorizontal());
-                        /// TESTY DO choose Candidate
+                        //horizontal to vertical ....
+                        Coordinates direction = enemyBoard.getLongestEmptyDirectionInOneAxis(candidates,!shipChaser.getHorizontal());
+
+                        System.out.println(shipChaser.getHorizontal());
+                        System.out.println(candidates.length);
+                        candidates[0].print();
+                        candidates[1].print();
+                        direction.print();
+
                         Coordinates candidate = shipChaser.chooseCandidate(candidates,direction);
                         nextTarget = Coordinates.addCoordinates(candidate,direction);
 
@@ -60,7 +73,8 @@ public class Start {
 
                 //CEL losowy
                 else {
-                    nextTarget = mainPage.getRandomCellCoord();
+                    //nextTarget = mainPage.getRandomCellCoord();
+                    nextTarget=setUpList.get(0);
                 }
 
                 System.out.println("strzelam w : " + nextTarget.getxCoord() + " " + nextTarget.getyCoord());
@@ -72,6 +86,7 @@ public class Start {
                     System.out.println("pudło - wychodzę z pętli");
                     continue;
                 } else {
+                    System.out.println("Trafiam");
                     shipChaser.setChase(true);
                     shipChaser.addHittedCell(nextTarget);
                     shipChaser.checkPossiblePivot();
