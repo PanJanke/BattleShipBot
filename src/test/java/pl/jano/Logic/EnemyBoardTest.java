@@ -66,6 +66,7 @@ class EnemyBoardTest {
         );
 
         enemyBoard.setNonEmptyCells(emptyCells);
+        enemyBoard.printOutBoard();
 
         List<Coordinates> candidates = new ArrayList<>();
         candidates.add(new Coordinates(6, 3));
@@ -129,6 +130,9 @@ class EnemyBoardTest {
 
     }
 
+
+
+
     @Test
     void LongestEmptyDirectionEast() {
         enemyBoard.setNonEmptyCells(emptyCells);
@@ -136,6 +140,21 @@ class EnemyBoardTest {
         Coordinates result = enemyBoard.getLongestEmptyDirection(start);
 
         assertEquals(east, result);
+    }
+
+
+    @Test
+    void LongestEmptyDirectionNorth2() {
+        emptyCells = Arrays.asList(
+                new Coordinates(6, 3),
+                new Coordinates(7, 3),
+                new Coordinates(8, 3)
+        );
+        enemyBoard.setNonEmptyCells(emptyCells);
+        Coordinates start = new Coordinates(6, 3);
+        Coordinates result = enemyBoard.getLongestEmptyDirection(start);
+
+        assertEquals(north, result);
     }
 
 
@@ -156,6 +175,8 @@ class EnemyBoardTest {
 
         assertEquals(south, result);
     }
+
+
 
 
     //using reflection to get acess to private method.

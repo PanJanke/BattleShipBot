@@ -93,12 +93,14 @@ public class EnemyBoard {
 
     public Coordinates getLongestEmptyDirectionInOneAxis(Coordinates[] candidates, boolean horizontal) {
         int maxEmptyCount = 0;
-        Coordinates longestEmptyDirection = horizontal ? east : north; // Set a default direction
+        Coordinates longestEmptyDirection = null;
         for (Coordinates start : candidates) {
             for (Coordinates direction : horizontal ? Arrays.asList(east, west) : Arrays.asList(north, south)) {
                 int emptyCount = countEmptyCellsInDirection(start, direction);
+                System.out.println(emptyCount);
+                start.print();
+                direction.print();
                 if (emptyCount > maxEmptyCount) {
-                    System.out.println("xxx");
                     maxEmptyCount = emptyCount;
                     longestEmptyDirection = direction;
                 }
@@ -112,11 +114,10 @@ public class EnemyBoard {
     private int countEmptyCellsInDirection(Coordinates start, Coordinates direction) {
         int emptyCount = 0;
         Coordinates iterator = new Coordinates(start.getyCoord(), start.getxCoord());
-
-        while (areCoordsCorrect(iterator) && isEmpty(iterator)) {
+        do {
             iterator.addCoordinates(direction);
             emptyCount++;
-        }
+        } while (areCoordsCorrect(iterator) && isEmpty(iterator));
 
         return emptyCount - 1;
     }
