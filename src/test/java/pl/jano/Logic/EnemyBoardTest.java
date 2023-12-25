@@ -101,7 +101,7 @@ class EnemyBoardTest {
         System.setOut(new PrintStream(outputStreamCaptor));
 
         enemyBoard.setEmptyCells(emptyCells);
-        enemyBoard.printOutBoard();
+        enemyBoard.printEmptyCells();
 
         String expectedOutput =
                 "___________________\n" +
@@ -127,6 +127,37 @@ class EnemyBoardTest {
 
         assertEquals(west, result);
 
+    }
+
+    @Test
+    void ProbabilityTest(){
+        emptyCells = Arrays.asList(
+               // new Coordinates(0, 0),
+                new Coordinates(0, 1),
+                new Coordinates(0, 2),
+                new Coordinates(0, 3),
+
+                new Coordinates(1, 0),
+                new Coordinates(1, 1),
+                //new Coordinates(1, 2),
+                new Coordinates(1, 3),
+
+                new Coordinates(2, 0),
+                new Coordinates(2, 1),
+                new Coordinates(2, 2),
+                new Coordinates(2, 3)
+        );
+
+        List<Integer> fleet = new ArrayList<>();
+        fleet.add(2);
+
+
+
+        enemyBoard.setEmptyCells(emptyCells);
+        enemyBoard.setProbabilty(fleet);
+        enemyBoard.printProbability();
+        Coordinates highestProbability = enemyBoard.findCellWithHighestProbability();
+        highestProbability.print();
     }
 
 

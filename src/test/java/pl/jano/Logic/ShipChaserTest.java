@@ -16,27 +16,33 @@ class ShipChaserTest {
 
     @BeforeEach
     void setUp() {
-        shipChaser = new ShipChaser(false, 5);
+        List<Integer> fleet = new ArrayList<>();
+        fleet.add(5);
+        fleet.add(4);
+        fleet.add(3);
+        fleet.add(3);
+        fleet.add(2);
+        shipChaser = new ShipChaser(false, fleet);
     }
 
 
     @Test
-    void chooseCandidate(){
+    void chooseCandidate() {
         Coordinates[] candidates = {
                 new Coordinates(1, 3),
                 new Coordinates(2, 3)
         };
-        Coordinates direction  = new Coordinates(1,0);
+        Coordinates direction = new Coordinates(1, 0);
 
-        Coordinates result = shipChaser.chooseCandidate(candidates,direction);
-        assertEquals(new Coordinates(2,3),result);
+        Coordinates result = shipChaser.chooseCandidate(candidates, direction);
+        assertEquals(new Coordinates(2, 3), result);
 
 
     }
 
 
     @Test
-    void EdgedValuesTestVertical(){
+    void EdgedValuesTestVertical() {
         shipChaser.setHorizontal(false);
         List<Coordinates> hittedCells = new ArrayList<>(Arrays.asList(
                 new Coordinates(3, 3),
@@ -47,12 +53,12 @@ class ShipChaserTest {
         shipChaser.setHittedCells(hittedCells);
 
         Coordinates[] result = shipChaser.getEdgedCoordinatesFromList();
-        assertEquals(new Coordinates(3,3),result[0]);
-        assertEquals(new Coordinates(6,3),result[1]);
+        assertEquals(new Coordinates(3, 3), result[0]);
+        assertEquals(new Coordinates(6, 3), result[1]);
     }
 
     @Test
-    void EdgedValuesTestHorizontal(){
+    void EdgedValuesTestHorizontal() {
         shipChaser.setHorizontal(true);
         List<Coordinates> hittedCells = new ArrayList<>(Arrays.asList(
                 new Coordinates(6, 2),
@@ -63,10 +69,8 @@ class ShipChaserTest {
         shipChaser.setHittedCells(hittedCells);
 
         Coordinates[] result = shipChaser.getEdgedCoordinatesFromList();
-        result[0].print();
-        result[1].print();
-        assertEquals(new Coordinates(6,1),result[0]);
-        assertEquals(new Coordinates(6,4),result[1]);
+        assertEquals(new Coordinates(6, 1), result[0]);
+        assertEquals(new Coordinates(6, 4), result[1]);
     }
 
     @Test
@@ -110,6 +114,19 @@ class ShipChaserTest {
         shipChaser.checkPossiblePivot();
         assertNull(shipChaser.getHorizontal());
         assertFalse(shipChaser.getPivotSetted());
+    }
 
+    @Test
+    void removeSinkedShipTest() {
+        List<Coordinates> hittedCells = new ArrayList<>(Arrays.asList(
+                new Coordinates(0, 0),
+                new Coordinates(1, 1),
+                new Coordinates(2, 2),
+                new Coordinates(2, 3)
+        ));
+        shipChaser.setHittedCells(hittedCells);
+        shipChaser.removeSinkedShip();
+        assertEquals(4, shipChaser.getFleet().size());
+        assertFalse(shipChaser.getFleet().contains(4));
     }
 }

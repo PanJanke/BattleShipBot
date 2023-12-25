@@ -50,4 +50,12 @@ public class Coordinates {
     public void print(){
         System.out.println("Y: "+getyCoord()+" X: "+getxCoord());
     }
+
+    public void setxCoord(int xCoord) {
+        this.xCoord = xCoord;
+    }
+
+    public void setyCoord(int yCoord) {
+        this.yCoord = yCoord;
+    }
 }

@@ -13,14 +13,14 @@ public class EnemyBoard {
     private static final int cols = 10;
 
 
-    private final Cell[][] board;
+    private Cell[][] board;
 
     public EnemyBoard() {
         this.board = new Cell[rows][cols];
 
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
-                board[i][j] = new Cell(true, 0);
+                board[i][j] = new Cell(true);
             }
         }
     }
@@ -61,7 +61,7 @@ public class EnemyBoard {
         }
     }
 
-    public void printOutBoard() {
+    public void printEmptyCells() {
         System.out.println("___________________");
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
@@ -72,7 +72,44 @@ public class EnemyBoard {
             }
             System.out.print("\n");
         }
+    }
 
+    public Coordinates findCellWithHighestProbability() {
+        int maxProbability = Integer.MIN_VALUE;
+        Coordinates target = new Coordinates(1, 1);
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                Cell currentCell = board[j][i];
+                if (currentCell.isEmpty() && currentCell.getProbabilityOfHit() > maxProbability) {
+                    maxProbability = currentCell.getProbabilityOfHit();
+                    target.setyCoord(j);
+                    target.setxCoord(i);
+                }
+            }
+        }
+        return target;
+    }
+
+    public void printProbability() {
+        System.out.println("___________________");
+        for (int i = 0; i < cols; i++) {
+            for (int j = 0; j < rows; j++) {
+                if (board[i][j].isEmpty())
+                    System.out.printf("%-3d ", board[i][j].getProbabilityOfHit());
+                 else
+                     System.out.print("XX  ");
+            }
+            System.out.print("\n");
+        }
+    }
+
+
+    private void clearProbabilty() {
+        for (int i = 0; i < rows; i++) {
+            for (int j = 0; j < cols; j++) {
+                this.board[i][j].setProbabilityOfHit(0);
+            }
+        }
     }
 
     public Coordinates getLongestEmptyDirection(Coordinates start) {
@@ -117,5 +154,40 @@ public class EnemyBoard {
         } while (areCoordsCorrect(iterator) && isEmpty(iterator));
 
         return emptyCount - 1;
+    }
+
+    public void incProbability(Coordinates position) {
+        this.board[position.getyCoord()][position.getxCoord()].increaseProbability();
+    }
+
+    public void increaseProbabilityInDirection(Coordinates start, Coordinates direction, Integer numberOfCells) {
+        Coordinates iterator = new Coordinates(start.getyCoord(), start.getxCoord());
+        for (int i = 0; i < numberOfCells; i++) {
+            incProbability(iterator);
+            iterator.addCoordinates(direction);
+        }
+    }
+
+
+    public void setProbabilty(List<Integer> fleet) {
+        clearProbabilty();
+        for (int i = 0; i < cols; i++) {
+            for (int j = 0; j < rows; j++) {
+                if (board[j][i].isEmpty()) {
+
+                    Coordinates myPosition = new Coordinates(j, i);
+                    int southCounter = countEmptyCellsInDirection(myPosition, south) + 1;
+                    int eastCounter = countEmptyCellsInDirection(myPosition, east) + 1;
+                    for (Integer lengthOfShip : fleet) {
+                        if (southCounter >= lengthOfShip) {
+                            increaseProbabilityInDirection(myPosition, south, lengthOfShip);
+                        }
+                        if (eastCounter >= lengthOfShip) {
+                            increaseProbabilityInDirection(myPosition, east, lengthOfShip);
+                        }
+                    }
+                }
+            }
+        }
     }
 }

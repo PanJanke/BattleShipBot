@@ -4,19 +4,21 @@ import java.util.*;
 
 public class ShipChaser {
     private boolean chase;
-    private int maxPossibleLength;
     private Boolean horizontal;
     private boolean pivotSetted;
-
-
+    private List<Integer> fleet;
     private List<Coordinates> hittedCells;
 
-    public ShipChaser(boolean chase, int maxPossibleLength) {
+    public ShipChaser(boolean chase, List<Integer> fleet) {
         this.chase = chase;
-        this.maxPossibleLength = maxPossibleLength;
+        this.fleet = fleet;
         this.horizontal = null;
         this.pivotSetted = false;
         this.hittedCells = new ArrayList<>();
+    }
+
+    public void clearHittedList(){
+        this.hittedCells.clear();
     }
 
     public List<Coordinates> getHittedCells() {
@@ -31,12 +33,12 @@ public class ShipChaser {
         this.chase = chase;
     }
 
-    public int getMaxPossibleLength() {
-        return maxPossibleLength;
+    public List<Integer> getFleet() {
+        return fleet;
     }
 
-    public void setMaxPossibleLength(int maxPossibleLength) {
-        this.maxPossibleLength = maxPossibleLength;
+    public void setFleet(List<Integer> fleet) {
+        this.fleet = fleet;
     }
 
     public Boolean getHorizontal() {
@@ -90,8 +92,10 @@ public class ShipChaser {
     public Coordinates chooseCandidate(Coordinates[] candidates, Coordinates direction) {
         Coordinates candidateA = candidates[0];
         Coordinates candidateB = candidates[1];
+        System.out.println("cos tu niby jest nulem");
+        candidateA.print();
         candidateB.print();
-        if (Coordinates.manhattanDistance(Coordinates.addCoordinates(candidateA,direction), candidateB) > Coordinates.manhattanDistance(candidateA,candidateB))
+        if (Coordinates.manhattanDistance(Coordinates.addCoordinates(candidateA, direction), candidateB) > Coordinates.manhattanDistance(candidateA, candidateB))
             return candidateA;
         else
             return candidateB;
@@ -114,9 +118,20 @@ public class ShipChaser {
         hittedCells.add(hit);
     }
 
+    public void removeSinkedShip() {
 
+        int sinkedShipLength = hittedCells.size();
+        Iterator<Integer> iterator = fleet.iterator();
 
+        while (iterator.hasNext()) {
+            int currentElement = iterator.next();
+            if (currentElement == sinkedShipLength) {
+                iterator.remove();
+                return;
+            }
+        }
 
+    }
 
 
 }
