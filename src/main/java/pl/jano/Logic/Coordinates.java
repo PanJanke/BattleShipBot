@@ -48,7 +48,7 @@ public class Coordinates {
     }
 
     public void print(){
-        System.out.println("Y: "+getyCoord()+" X: "+getxCoord());
+        System.out.println("Y: "+(getyCoord()+1) +" X: "+ (getxCoord() + 1));
     }
 
     public void setxCoord(int xCoord) {

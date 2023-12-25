@@ -9,8 +9,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Start {
-    public static void main(String[] args) {
 
+    public void start() throws InterruptedException {
         List<Integer> fleet = new ArrayList<>();
         fleet.add(5);
         fleet.add(4);
@@ -29,14 +29,8 @@ public class Start {
         while (true) {
 
             if (mainPage.IsEnemyTurn()) {
-                try {
-                    Thread.sleep(1000);
-                } catch (InterruptedException e) {
-                    throw new RuntimeException(e);
-                }
-            }
-
-            else {
+                Thread.sleep(500);
+            } else {
 
                 enemyBoard.setEmptyCells(mainPage.getCoordinatesOfEmptyCells());
                 int sinkedCounter = mainPage.sinkedShipsNumber();
@@ -49,25 +43,23 @@ public class Start {
                         Coordinates direction = enemyBoard.getLongestEmptyDirection(hittedCell);
 
                         nextTarget = Coordinates.addCoordinates(hittedCell, direction);
-                    }
-
-                    else {
+                    } else {
                         Coordinates[] candidates = shipChaser.getEdgedCoordinatesFromList();
                         Coordinates direction = enemyBoard.getLongestEmptyDirectionInOneAxis(candidates, !shipChaser.getHorizontal());
                         Coordinates candidate = shipChaser.chooseCandidate(candidates, direction);
 
                         nextTarget = Coordinates.addCoordinates(candidate, direction);
                     }
-                }
-
-                else {
+                } else {
                     enemyBoard.setProbabilty(shipChaser.getFleet());
                     nextTarget = enemyBoard.findCellWithHighestProbability();
                 }
 
                 enemyBoard.printProbability();
-                System.out.println("strzelam w : " + nextTarget.getxCoord() + " " + nextTarget.getyCoord());
+                System.out.println("Shoot at: ");
+                nextTarget.print();
                 mainPage.hitCell(nextTarget);
+                Thread.sleep(300);
                 mainPage.reinitializeElements();
 
 
@@ -92,7 +84,11 @@ public class Start {
                     shipChaser.setPivotSetted(false);
                     shipChaser.setHorizontal(false);
 
-                    System.out.print("Zostalo statkow: "+shipChaser.getFleet().size());
+                    System.out.println("Zostalo statkow: " + shipChaser.getFleet().size());
+                    if (shipChaser.getFleet().isEmpty()){
+                        System.out.println("Wygralem!!");
+                        break;
+                    }
 
                 }
 
@@ -100,6 +96,15 @@ public class Start {
             }
 
         }
+
+    }
+
+
+    public static void main(String[] args) throws InterruptedException {
+
+        Start start = new Start();
+        start.start();
+
 
     }
 

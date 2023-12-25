@@ -92,9 +92,6 @@ public class ShipChaser {
     public Coordinates chooseCandidate(Coordinates[] candidates, Coordinates direction) {
         Coordinates candidateA = candidates[0];
         Coordinates candidateB = candidates[1];
-        System.out.println("cos tu niby jest nulem");
-        candidateA.print();
-        candidateB.print();
         if (Coordinates.manhattanDistance(Coordinates.addCoordinates(candidateA, direction), candidateB) > Coordinates.manhattanDistance(candidateA, candidateB))
             return candidateA;
         else

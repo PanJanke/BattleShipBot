@@ -125,6 +125,12 @@ public class EnemyBoard {
             }
         }
 
+        if(longestEmptyDirection==null){
+            System.out.println("Dla punktu:");
+            start.print();
+            System.out.println("w kazdym keirunku chujnia");
+        }
+
         return longestEmptyDirection;
     }
 
