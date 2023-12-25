@@ -8,7 +8,7 @@ import pl.jano.Pages.MainPage;
 import java.util.ArrayList;
 import java.util.List;
 
-public class Start {
+public class Simulation {
 
     public void start() throws InterruptedException {
         List<Integer> fleet = new ArrayList<>();
@@ -102,8 +102,8 @@ public class Start {
 
     public static void main(String[] args) throws InterruptedException {
 
-        Start start = new Start();
-        start.start();
+        Simulation simulation = new Simulation();
+        simulation.start();
 
 
     }

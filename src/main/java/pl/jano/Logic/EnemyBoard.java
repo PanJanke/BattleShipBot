@@ -135,7 +135,7 @@ public class EnemyBoard {
     }
 
     public Coordinates getLongestEmptyDirectionInOneAxis(Coordinates[] candidates, boolean horizontal) {
-        int maxEmptyCount = 0;
+        int maxEmptyCount = -1;
         Coordinates longestEmptyDirection = null;
         for (Coordinates start : candidates) {
             for (Coordinates direction : horizontal ? Arrays.asList(east, west) : Arrays.asList(north, south)) {
