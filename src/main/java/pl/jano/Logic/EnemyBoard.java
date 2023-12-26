@@ -13,7 +13,7 @@ public class EnemyBoard {
     private static final int cols = 10;
 
 
-    private Cell[][] board;
+    private final Cell[][] board;
 
     public EnemyBoard() {
         this.board = new Cell[rows][cols];
@@ -34,8 +34,8 @@ public class EnemyBoard {
     }
 
     public boolean areCoordsCorrect(Coordinates coord) {
-        return (cols > coord.getyCoord() && coord.getyCoord() >= 0) &&
-                (rows > coord.getxCoord() && coord.getxCoord() >= 0);
+        return (cols > coord.getyCoord() && coord.getyCoord() >= 0)
+                && (rows > coord.getxCoord() && coord.getxCoord() >= 0);
     }
 
     public void setEmptyCells(List<Coordinates> emptyCells) {
@@ -65,10 +65,8 @@ public class EnemyBoard {
         System.out.println("___________________");
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
-                if (board[i][j].isEmpty())
-                    System.out.print("0 ");
-                else
-                    System.out.print("X ");
+                if (board[i][j].isEmpty()) System.out.print("0 ");
+                else System.out.print("X ");
             }
             System.out.print("\n");
         }
@@ -91,20 +89,18 @@ public class EnemyBoard {
     }
 
     public void printProbability() {
-        System.out.println("___________________");
+        System.out.println();
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
-                if (board[i][j].isEmpty())
-                    System.out.printf("%-3d ", board[i][j].getProbabilityOfHit());
-                 else
-                     System.out.print("XX  ");
+                if (board[i][j].isEmpty()) System.out.printf("%-3d ", board[i][j].getProbabilityOfHit());
+                else System.out.print("XX  ");
             }
             System.out.print("\n");
         }
     }
 
 
-    private void clearProbabilty() {
+    private void clearProbability() {
         for (int i = 0; i < rows; i++) {
             for (int j = 0; j < cols; j++) {
                 this.board[i][j].setProbabilityOfHit(0);
@@ -113,7 +109,6 @@ public class EnemyBoard {
     }
 
     public Coordinates getLongestEmptyDirection(Coordinates start) {
-
         int maxEmptyCount = 0;
         Coordinates longestEmptyDirection = null;
 
@@ -125,17 +120,11 @@ public class EnemyBoard {
             }
         }
 
-        if(longestEmptyDirection==null){
-            System.out.println("Dla punktu:");
-            start.print();
-            System.out.println("w kazdym keirunku chujnia");
-        }
-
         return longestEmptyDirection;
     }
 
     public Coordinates getLongestEmptyDirectionInOneAxis(Coordinates[] candidates, boolean horizontal) {
-        int maxEmptyCount = -1;
+        int maxEmptyCount = Integer.MIN_VALUE;
         Coordinates longestEmptyDirection = null;
         for (Coordinates start : candidates) {
             for (Coordinates direction : horizontal ? Arrays.asList(east, west) : Arrays.asList(north, south)) {
@@ -175,8 +164,8 @@ public class EnemyBoard {
     }
 
 
-    public void setProbabilty(List<Integer> fleet) {
-        clearProbabilty();
+    public void setProbability(List<Integer> fleet) {
+        clearProbability();
         for (int i = 0; i < cols; i++) {
             for (int j = 0; j < rows; j++) {
                 if (board[j][i].isEmpty()) {

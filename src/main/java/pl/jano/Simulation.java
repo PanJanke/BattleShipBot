@@ -10,36 +10,63 @@ import java.util.List;
 
 public class Simulation {
 
-    public void start() throws InterruptedException {
-        List<Integer> fleet = new ArrayList<>();
-        fleet.add(5);
-        fleet.add(4);
-        fleet.add(3);
-        fleet.add(3);
-        fleet.add(2);
+    private static final long SLEEP_TIME_MILLISECONDS = 500;
 
 
-        MainPage mainPage = new MainPage("http://pl.battleship-game.org/id33781256/classic");
+    public List<Integer> classicFleet() {
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(5);
+        list.add(4);
+        list.add(3);
+        list.add(3);
+        list.add(2);
+
+        return list;
+    }
+
+
+    public List<Integer> russianFleet() {
+        ArrayList<Integer> list = new ArrayList<>();
+        list.add(4);
+        list.add(3);
+        list.add(3);
+        list.add(2);
+        list.add(2);
+        list.add(2);
+        list.add(1);
+        list.add(1);
+        list.add(1);
+        list.add(1);
+
+        return list;
+    }
+
+    public void start(String url, List<Integer> inputFleet) throws InterruptedException {
+
+        int moveCounter = 0;
+        MainPage mainPage = new MainPage(url);
+        mainPage.clickRandomFleetPLacing();
         mainPage.startGame();
 
         EnemyBoard enemyBoard = new EnemyBoard();
-        ShipChaser shipChaser = new ShipChaser(false, fleet);
+        ShipChaser shipChaser = new ShipChaser(false, inputFleet);
 
 
-        while (true) {
+        while (mainPage.isGameContinue()) {
+            mainPage.reinitializeElements();
 
             if (mainPage.IsEnemyTurn()) {
-                Thread.sleep(500);
+                Thread.sleep(SLEEP_TIME_MILLISECONDS);
             } else {
 
                 enemyBoard.setEmptyCells(mainPage.getCoordinatesOfEmptyCells());
-                int sinkedCounter = mainPage.sinkedShipsNumber();
+                int sinkedCounter = mainPage.sankShipsNumber();
                 Coordinates nextTarget = null;
 
 
                 if (shipChaser.isChase()) {
-                    if (!shipChaser.getPivotSetted()) {
-                        Coordinates hittedCell = shipChaser.getHittedCells().get(0);
+                    if (!shipChaser.getPivotSet()) {
+                        Coordinates hittedCell = shipChaser.getHitCells().get(0);
                         Coordinates direction = enemyBoard.getLongestEmptyDirection(hittedCell);
 
                         nextTarget = Coordinates.addCoordinates(hittedCell, direction);
@@ -51,49 +78,36 @@ public class Simulation {
                         nextTarget = Coordinates.addCoordinates(candidate, direction);
                     }
                 } else {
-                    enemyBoard.setProbabilty(shipChaser.getFleet());
+                    enemyBoard.setProbability(shipChaser.getFleet());
                     nextTarget = enemyBoard.findCellWithHighestProbability();
                 }
 
-                enemyBoard.printProbability();
-                System.out.println("Shoot at: ");
-                nextTarget.print();
                 mainPage.hitCell(nextTarget);
-                Thread.sleep(300);
                 mainPage.reinitializeElements();
-
+                moveCounter++;
 
                 if (mainPage.IsEnemyTurn()) {
-                    System.out.println("pudło - wychodzę z pętli");
                     continue;
-                } else {
-                    System.out.println("Trafiam");
+                }
+
+                else {
                     shipChaser.setChase(true);
-                    shipChaser.addHittedCell(nextTarget);
+                    shipChaser.addHitCell(nextTarget);
                     shipChaser.checkPossiblePivot();
                 }
 
-                int sinkedCounterAfterShot = mainPage.sinkedShipsNumber();
-                if (sinkedCounterAfterShot > sinkedCounter) {
-
-                    System.out.print(" Zatopiony!!");
-                    //fix that
-                    shipChaser.setChase(false);
-                    shipChaser.removeSinkedShip();
-                    shipChaser.clearHittedList();
-                    shipChaser.setPivotSetted(false);
-                    shipChaser.setHorizontal(false);
-
-                    System.out.println("Zostalo statkow: " + shipChaser.getFleet().size());
-                    if (shipChaser.getFleet().isEmpty()){
-                        System.out.println("Wygralem!!");
-                        break;
-                    }
-
+                if (mainPage.sankShipsNumber() > sinkedCounter) {
+                    shipChaser.chaseFinished();
                 }
 
-
             }
+        }
+
+        System.out.println("Number of moves: " + moveCounter);
+        if (mainPage.winChecker()) {
+            System.out.println("Win");
+        } else if (mainPage.looseChecker()) {
+            System.out.println("Loose");
 
         }
 
@@ -103,7 +117,7 @@ public class Simulation {
     public static void main(String[] args) throws InterruptedException {
 
         Simulation simulation = new Simulation();
-        simulation.start();
+        simulation.start("http://pl.battleship-game.org/", simulation.russianFleet());
 
 
     }

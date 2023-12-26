@@ -5,24 +5,24 @@ import java.util.*;
 public class ShipChaser {
     private boolean chase;
     private Boolean horizontal;
-    private boolean pivotSetted;
-    private List<Integer> fleet;
-    private List<Coordinates> hittedCells;
+    private boolean pivotSet;
+    private final List<Integer> fleet;
+    private List<Coordinates> hitCells;
 
     public ShipChaser(boolean chase, List<Integer> fleet) {
         this.chase = chase;
         this.fleet = fleet;
         this.horizontal = null;
-        this.pivotSetted = false;
-        this.hittedCells = new ArrayList<>();
+        this.pivotSet = false;
+        this.hitCells = new ArrayList<>();
     }
 
-    public void clearHittedList(){
-        this.hittedCells.clear();
+    public void clearHitList(){
+        this.hitCells.clear();
     }
 
-    public List<Coordinates> getHittedCells() {
-        return hittedCells;
+    public List<Coordinates> getHitCells() {
+        return hitCells;
     }
 
     public boolean isChase() {
@@ -37,10 +37,6 @@ public class ShipChaser {
         return fleet;
     }
 
-    public void setFleet(List<Integer> fleet) {
-        this.fleet = fleet;
-    }
-
     public Boolean getHorizontal() {
         return horizontal;
     }
@@ -49,44 +45,44 @@ public class ShipChaser {
         this.horizontal = horizontal;
     }
 
-    public Boolean getPivotSetted() {
-        return pivotSetted;
+    public Boolean getPivotSet() {
+        return pivotSet;
     }
 
-    public void setPivotSetted(Boolean pivotSetted) {
-        this.pivotSetted = pivotSetted;
+    public void setPivotSet(Boolean pivotSet) {
+        this.pivotSet = pivotSet;
     }
 
-    public void setHittedCells(List<Coordinates> hittedCells) {
-        this.hittedCells = hittedCells;
+    public void setHitCells(List<Coordinates> hitCells) {
+        this.hitCells = hitCells;
     }
 
     public void checkPossiblePivot() {
-        if (hittedCells.size() != 2)
+        if (hitCells.size() != 2)
             return;
 
         Map<Integer, Integer> xCoordMap = new HashMap<>();
         Map<Integer, Integer> yCoordMap = new HashMap<>();
 
-        for (Coordinates c : hittedCells) {
+        for (Coordinates c : hitCells) {
             int x = c.getxCoord();
             int y = c.getyCoord();
             xCoordMap.put(x, xCoordMap.getOrDefault(x, 0) + 1);
             yCoordMap.put(y, yCoordMap.getOrDefault(y, 0) + 1);
 
             if (xCoordMap.get(x) > 1) {
-                pivotSetted = true;
+                pivotSet = true;
                 this.horizontal = true;
                 return;
             }
 
             if (yCoordMap.get(y) > 1) {
-                pivotSetted = true;
+                pivotSet = true;
                 this.horizontal = false;
                 return;
             }
         }
-        pivotSetted = false;
+        pivotSet = false;
     }
 
     public Coordinates chooseCandidate(Coordinates[] candidates, Coordinates direction) {
@@ -100,34 +96,43 @@ public class ShipChaser {
 
     public Coordinates[] getEdgedCoordinatesFromList() {
         if (horizontal)
-            hittedCells.sort(Comparator.comparingInt(Coordinates::getxCoord));
+            hitCells.sort(Comparator.comparingInt(Coordinates::getxCoord));
         else
-            hittedCells.sort(Comparator.comparingInt(Coordinates::getyCoord));
+            hitCells.sort(Comparator.comparingInt(Coordinates::getyCoord));
 
         List<Coordinates> result = new ArrayList<>();
-        result.add(hittedCells.getFirst());
-        result.add(hittedCells.getLast());
+        result.add(hitCells.getFirst());
+        result.add(hitCells.getLast());
 
         return result.toArray(new Coordinates[0]);
     }
 
-    public void addHittedCell(Coordinates hit) {
-        hittedCells.add(hit);
+    public void addHitCell(Coordinates hit) {
+        hitCells.add(hit);
     }
 
-    public void removeSinkedShip() {
+    public void chaseFinished(){
+        setChase(false);
+        removeSankShip();
+        clearHitList();
+        setPivotSet(false);
+        setHorizontal(false);
+    }
 
-        int sinkedShipLength = hittedCells.size();
-        Iterator<Integer> iterator = fleet.iterator();
-
-        while (iterator.hasNext()) {
-            int currentElement = iterator.next();
-            if (currentElement == sinkedShipLength) {
-                iterator.remove();
-                return;
-            }
+    public void printFleet(){
+        System.out.println("Fleet: ");
+        for (int i:fleet) {
+            System.out.println(i);
         }
+    }
 
+    public void removeSankShip() {
+        int sunkShipLength = hitCells.size();
+        for(int i =0;i< fleet.size();i++)
+            if(fleet.get(i)==sunkShipLength) {
+                fleet.remove(i);
+                break;
+            }
     }
 
 

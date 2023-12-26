@@ -14,7 +14,7 @@ import java.util.Random;
 
 public class MainPage {
 
-    private WebDriver driver;
+    private final WebDriver driver;
     @FindBy(xpath = "//div[@class='battlefield-start-button']")
     private WebElement startButton;
     @FindBy(xpath = "//div[@class='battlefield battlefield__rival']//td[@class='battlefield-cell battlefield-cell__empty']/div")
@@ -27,6 +27,15 @@ public class MainPage {
     @FindBy(xpath = "//div[@class='battlefield battlefield__rival']")
     private List<WebElement> enemyBoard;
 
+    @FindBy(xpath = "//div[contains(@class, 'game-over-win')]")
+    private List<WebElement> winNotification;
+
+    @FindBy(xpath = "//div[contains(@class, 'game-over-loose')]")
+    private List<WebElement> looseNotification;
+
+    @FindBy(xpath = "//li[@class='placeships-variant placeships-variant__randomly']/span")
+    private WebElement randomFleetPlacingButton;
+
     public MainPage(String url) {
         WebDriver driver;
         driver = DriverFactory.getDriver();
@@ -34,6 +43,18 @@ public class MainPage {
         driver.get(url);
         PageFactory.initElements(driver, this);
         this.driver = driver;
+    }
+
+    public boolean winChecker() {
+        return !winNotification.isEmpty() && winNotification.get(0).isDisplayed();
+    }
+
+    public boolean looseChecker() {
+        return !looseNotification.isEmpty() && looseNotification.get(0).isDisplayed();
+    }
+
+    public boolean isGameContinue() {
+        return !looseChecker() && !winChecker();
     }
 
     public void reinitializeElements() {
@@ -48,7 +69,7 @@ public class MainPage {
         return enemyBoard.isEmpty();
     }
 
-    public int hittedCellsNumber() {
+    public int hitCellsNumber() {
         return hittedCellsList.size();
     }
 
@@ -61,6 +82,10 @@ public class MainPage {
         return new Coordinates(yCoord, xCoord);
     }
 
+    public void clickRandomFleetPLacing(){
+        randomFleetPlacingButton.click();
+    }
+
     public void hitCell(Coordinates coordinates) {
         for (WebElement element : possibleShotList) {
             int x = Integer.parseInt(element.getAttribute("data-x"));
@@ -70,11 +95,9 @@ public class MainPage {
                 return;
             }
         }
-        System.out.println("element nie znaleziony na liscie");
-
     }
 
-    public int sinkedShipsNumber() {
+    public int sankShipsNumber() {
         return sinkedList.size();
     }
 

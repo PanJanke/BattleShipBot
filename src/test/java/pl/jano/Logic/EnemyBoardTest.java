@@ -104,17 +104,18 @@ class EnemyBoardTest {
         enemyBoard.printEmptyCells();
 
         String expectedOutput =
-                "___________________\n" +
-                        "0 X X X X X X X X X \n" +
-                        "X 0 X X X X X X X X \n" +
-                        "X X 0 X X X X X X X \n" +
-                        "X X X 0 0 0 0 X X X \n" +
-                        "X X X X X X X X X X \n" +
-                        "X X X X X X X X X X \n" +
-                        "X X X X X X X X X X \n" +
-                        "X X X X X X X X X X \n" +
-                        "X X X X X X X X X X \n" +
-                        "X X X X X X X X X X";
+                """
+                        ___________________
+                        0 X X X X X X X X X\s
+                        X 0 X X X X X X X X\s
+                        X X 0 X X X X X X X\s
+                        X X X 0 0 0 0 X X X\s
+                        X X X X X X X X X X\s
+                        X X X X X X X X X X\s
+                        X X X X X X X X X X\s
+                        X X X X X X X X X X\s
+                        X X X X X X X X X X\s
+                        X X X X X X X X X X""";
 
         assertEquals(expectedOutput, outputStreamCaptor.toString().trim());
     }
@@ -154,10 +155,12 @@ class EnemyBoardTest {
 
 
         enemyBoard.setEmptyCells(emptyCells);
-        enemyBoard.setProbabilty(fleet);
+        enemyBoard.setProbability(fleet);
         enemyBoard.printProbability();
         Coordinates highestProbability = enemyBoard.findCellWithHighestProbability();
         highestProbability.print();
+        assertEquals(new Coordinates(2,2),highestProbability);
+
     }
 
 
@@ -209,7 +212,7 @@ class EnemyBoardTest {
 
 
 
-    //using reflection to get acess to private method.
+    //using reflection to get access to private method.
     @Test
     void EmptyCellCounter() throws InvocationTargetException, IllegalAccessException, NoSuchMethodException {
 
