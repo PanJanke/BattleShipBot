@@ -1,19 +1,21 @@
 package pl.jano.Logic;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.Comparator;
+import java.util.List;
 
 public class ShipChaser {
     private boolean chase;
-    private final List<Integer> fleet;
+    private List<Integer> fleet;
     private List<Coordinates> hitCells;
 
     public ShipChaser(boolean chase, List<Integer> fleet) {
         this.chase = chase;
-        this.fleet = fleet;
+        this.fleet = new ArrayList<>(fleet);
         this.hitCells = new ArrayList<>();
     }
 
-    public void clearHitList(){
+    public void clearHitList() {
         this.hitCells.clear();
     }
 
@@ -34,12 +36,9 @@ public class ShipChaser {
     }
 
 
-
-
     public void setHitCells(List<Coordinates> hitCells) {
         this.hitCells = hitCells;
     }
-
 
 
     public Coordinates chooseCandidate(Coordinates[] candidates, Coordinates direction) {
@@ -68,23 +67,23 @@ public class ShipChaser {
         hitCells.add(hit);
     }
 
-    public void chaseFinished(){
+    public void chaseFinished() {
         setChase(false);
         removeSankShip();
         clearHitList();
     }
 
-    public void printFleet(){
+    public void printFleet() {
         System.out.println("Fleet: ");
-        for (int i:fleet) {
+        for (int i : fleet) {
             System.out.println(i);
         }
     }
 
     public void removeSankShip() {
         int sunkShipLength = hitCells.size();
-        for(int i =0;i< fleet.size();i++)
-            if(fleet.get(i)==sunkShipLength) {
+        for (int i = 0; i < fleet.size(); i++)
+            if (fleet.get(i) == sunkShipLength) {
                 fleet.remove(i);
                 break;
             }

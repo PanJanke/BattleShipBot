@@ -1,45 +1,17 @@
-package pl.jano;
+package pl.jano.Bot;
 
 import pl.jano.Logic.Coordinates;
 import pl.jano.Logic.EnemyBoard;
 import pl.jano.Logic.ShipChaser;
 import pl.jano.Pages.MainPage;
 
-import java.util.ArrayList;
 import java.util.List;
 
 public class Simulation {
-
     private static final long SLEEP_TIME_MILLISECONDS = 500;
+    public static final List<Integer> CLASSIC_FLEET = List.of(5, 4, 3, 3, 2);
+    public static final List<Integer> RUSSIAN_FLEET = List.of(4, 3, 3, 2, 2, 2, 1, 1, 1, 1);
 
-
-    public List<Integer> classicFleet() {
-        ArrayList<Integer> list = new ArrayList<>();
-        list.add(5);
-        list.add(4);
-        list.add(3);
-        list.add(3);
-        list.add(2);
-
-        return list;
-    }
-
-
-    public List<Integer> russianFleet() {
-        ArrayList<Integer> list = new ArrayList<>();
-        list.add(4);
-        list.add(3);
-        list.add(3);
-        list.add(2);
-        list.add(2);
-        list.add(2);
-        list.add(1);
-        list.add(1);
-        list.add(1);
-        list.add(1);
-
-        return list;
-    }
 
     public void start(String url, List<Integer> inputFleet) throws InterruptedException {
 
@@ -62,7 +34,7 @@ public class Simulation {
                 enemyBoard.setEmptyCells(mainPage.getCoordinatesOfEmptyCells());
                 int sinkedCounter = mainPage.sankShipsNumber();
                 int hitedCounter = mainPage.hitCellsNumber();
-                Coordinates nextTarget = null;
+                Coordinates nextTarget;
 
 
                 if (shipChaser.isChase()) {
@@ -88,7 +60,7 @@ public class Simulation {
                 mainPage.reinitializeElements();
                 moveCounter++;
 
-                if (mainPage.hitCellsNumber()>hitedCounter) {
+                if (mainPage.hitCellsNumber() > hitedCounter) {
                     shipChaser.setChase(true);
                     shipChaser.addHitCell(nextTarget);
                 }
@@ -100,29 +72,20 @@ public class Simulation {
             }
         }
 
-
+        System.out.println();
         if (mainPage.winChecker()) {
-            System.out.println("Win");
+            System.out.print("Win");
         } else if (mainPage.looseChecker()) {
-            System.out.println("Loose");
+            System.out.print("Loose");
         } else if (mainPage.rivalLeaveChecker()) {
-            System.out.println("Rival Left");
+            System.out.print("Rival Left");
         }
-        System.out.print(" : " + moveCounter);
+        System.out.print(": " + moveCounter + "\n");
+
 
         mainPage.quit();
     }
 
-
-    public static void main(String[] args) throws InterruptedException {
-
-        Simulation simulation = new Simulation();
-        simulation.start("http://pl.battleship-game.org/", simulation.russianFleet());
-
-
-
-
-    }
 
 }
 

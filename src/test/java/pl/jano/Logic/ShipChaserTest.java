@@ -42,7 +42,6 @@ class ShipChaserTest {
 
     @Test
     void EdgedValuesTestVertical() {
-        shipChaser.setHorizontal(false);
         List<Coordinates> hitCells = new ArrayList<>(Arrays.asList(
                 new Coordinates(3, 3),
                 new Coordinates(4, 3),
@@ -58,7 +57,6 @@ class ShipChaserTest {
 
     @Test
     void EdgedValuesTestHorizontal() {
-        shipChaser.setHorizontal(true);
         List<Coordinates> hitCells = new ArrayList<>(Arrays.asList(
                 new Coordinates(6, 2),
                 new Coordinates(6, 3),
@@ -70,49 +68,6 @@ class ShipChaserTest {
         Coordinates[] result = shipChaser.getEdgedCoordinatesFromList();
         assertEquals(new Coordinates(6, 1), result[0]);
         assertEquals(new Coordinates(6, 4), result[1]);
-    }
-
-    @Test
-    void checkExistedVerticalPivot() {
-        List<Coordinates> hitCells = new ArrayList<>(Arrays.asList(
-                new Coordinates(3, 5),
-                new Coordinates(3, 6)
-        ));
-
-        shipChaser.setHitCells(hitCells);
-        shipChaser.checkPossiblePivot();
-        assertFalse(shipChaser.getHorizontal());
-        assertTrue(shipChaser.getPivotSet());
-
-    }
-
-    @Test
-    void checkExistedHorizontalPivot() {
-        List<Coordinates> hitCells = new ArrayList<>(Arrays.asList(
-                new Coordinates(4, 3),
-                new Coordinates(5, 3)
-        ));
-        shipChaser.setHitCells(hitCells);
-        shipChaser.checkPossiblePivot();
-        assertTrue(shipChaser.getHorizontal());
-        assertTrue(shipChaser.getPivotSet());
-    }
-
-    @Test
-    void testNoPivot() {
-        List<Coordinates> hitCells = new ArrayList<>(Arrays.asList(
-                new Coordinates(0, 0),
-                new Coordinates(1, 1),
-                new Coordinates(2, 2),
-                new Coordinates(3, 3),
-                new Coordinates(4, 4),
-                new Coordinates(6, 6)
-        ));
-
-        shipChaser.setHitCells(hitCells);
-        shipChaser.checkPossiblePivot();
-        assertNull(shipChaser.getHorizontal());
-        assertFalse(shipChaser.getPivotSet());
     }
 
     @Test

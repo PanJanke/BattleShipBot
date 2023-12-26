@@ -1,11 +1,11 @@
 package pl.jano.Pages;
 
-import pl.jano.Logic.Coordinates;
-import pl.jano.utils.DriverFactory;
 import org.openqa.selenium.WebDriver;
 import org.openqa.selenium.WebElement;
 import org.openqa.selenium.support.FindBy;
 import org.openqa.selenium.support.PageFactory;
+import pl.jano.Logic.Coordinates;
+import pl.jano.utils.DriverFactory;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -47,13 +47,15 @@ public class MainPage {
         PageFactory.initElements(driver, this);
         this.driver = driver;
     }
-    public void quit(){
+
+    public void quit() {
         driver.quit();
     }
 
-    public boolean rivalLeaveChecker(){
+    public boolean rivalLeaveChecker() {
         return !rivalLeaveNotification.isEmpty() && rivalLeaveNotification.get(0).isDisplayed();
     }
+
     public boolean winChecker() {
         return !winNotification.isEmpty() && winNotification.get(0).isDisplayed();
     }
@@ -91,7 +93,7 @@ public class MainPage {
         return new Coordinates(yCoord, xCoord);
     }
 
-    public void clickRandomFleetPLacing(){
+    public void clickRandomFleetPLacing() {
         randomFleetPlacingButton.click();
     }
 

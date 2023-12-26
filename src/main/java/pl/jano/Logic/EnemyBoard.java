@@ -12,7 +12,6 @@ public class EnemyBoard {
     private static final int rows = 10;
     private static final int cols = 10;
 
-
     private final Cell[][] board;
 
     public EnemyBoard() {
