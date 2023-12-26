@@ -43,6 +43,14 @@ public class Coordinates {
     }
 
     @Override
+    public String toString() {
+        return "Coordinates{"
+                + "xCoord=" + xCoord
+                + ", yCoord=" + yCoord
+                + '}';
+    }
+
+    @Override
     public int hashCode() {
         return Objects.hash(xCoord, yCoord);
     }

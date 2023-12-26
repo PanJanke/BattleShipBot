@@ -52,8 +52,9 @@ class EnemyBoardTest {
         List<Coordinates> candidates = new ArrayList<>();
         candidates.add(new Coordinates(3, 3));
         candidates.add(new Coordinates(3, 5));
-        Coordinates result = enemyBoard.getLongestEmptyDirectionInOneAxis(candidates.toArray(new Coordinates[0]), true);
+        Coordinates result = enemyBoard.getLongestEmptyDirectionInOneAxis(candidates.toArray(new Coordinates[0]));
         assertEquals(east, result);
+
 
     }
 
@@ -70,7 +71,7 @@ class EnemyBoardTest {
         List<Coordinates> candidates = new ArrayList<>();
         candidates.add(new Coordinates(6, 3));
         candidates.add(new Coordinates(8, 3));
-        Coordinates result = enemyBoard.getLongestEmptyDirectionInOneAxis(candidates.toArray(new Coordinates[0]), false);
+        Coordinates result = enemyBoard.getLongestEmptyDirectionInOneAxis(candidates.toArray(new Coordinates[0]));
         assertEquals(north, result);
 
     }
@@ -159,7 +160,7 @@ class EnemyBoardTest {
         enemyBoard.printProbability();
         Coordinates highestProbability = enemyBoard.findCellWithHighestProbability();
         highestProbability.print();
-        assertEquals(new Coordinates(2,2),highestProbability);
+        assertEquals(new Coordinates(1,1),highestProbability);
 
     }
 

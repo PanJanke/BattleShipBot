@@ -61,18 +61,20 @@ public class Simulation {
 
                 enemyBoard.setEmptyCells(mainPage.getCoordinatesOfEmptyCells());
                 int sinkedCounter = mainPage.sankShipsNumber();
+                int hitedCounter = mainPage.hitCellsNumber();
                 Coordinates nextTarget = null;
 
 
                 if (shipChaser.isChase()) {
-                    if (!shipChaser.getPivotSet()) {
+
+                    if (shipChaser.getHitCells().size() == 1) {
                         Coordinates hittedCell = shipChaser.getHitCells().get(0);
                         Coordinates direction = enemyBoard.getLongestEmptyDirection(hittedCell);
 
                         nextTarget = Coordinates.addCoordinates(hittedCell, direction);
                     } else {
                         Coordinates[] candidates = shipChaser.getEdgedCoordinatesFromList();
-                        Coordinates direction = enemyBoard.getLongestEmptyDirectionInOneAxis(candidates, !shipChaser.getHorizontal());
+                        Coordinates direction = enemyBoard.getLongestEmptyDirectionInOneAxis(candidates);
                         Coordinates candidate = shipChaser.chooseCandidate(candidates, direction);
 
                         nextTarget = Coordinates.addCoordinates(candidate, direction);
@@ -86,14 +88,9 @@ public class Simulation {
                 mainPage.reinitializeElements();
                 moveCounter++;
 
-                if (mainPage.IsEnemyTurn()) {
-                    continue;
-                }
-
-                else {
+                if (mainPage.hitCellsNumber()>hitedCounter) {
                     shipChaser.setChase(true);
                     shipChaser.addHitCell(nextTarget);
-                    shipChaser.checkPossiblePivot();
                 }
 
                 if (mainPage.sankShipsNumber() > sinkedCounter) {
@@ -103,14 +100,17 @@ public class Simulation {
             }
         }
 
-        System.out.println("Number of moves: " + moveCounter);
+
         if (mainPage.winChecker()) {
             System.out.println("Win");
         } else if (mainPage.looseChecker()) {
             System.out.println("Loose");
-
+        } else if (mainPage.rivalLeaveChecker()) {
+            System.out.println("Rival Left");
         }
+        System.out.print(" : " + moveCounter);
 
+        mainPage.quit();
     }
 
 
@@ -118,6 +118,8 @@ public class Simulation {
 
         Simulation simulation = new Simulation();
         simulation.start("http://pl.battleship-game.org/", simulation.russianFleet());
+
+
 
 
     }

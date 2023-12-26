@@ -4,16 +4,12 @@ import java.util.*;
 
 public class ShipChaser {
     private boolean chase;
-    private Boolean horizontal;
-    private boolean pivotSet;
     private final List<Integer> fleet;
     private List<Coordinates> hitCells;
 
     public ShipChaser(boolean chase, List<Integer> fleet) {
         this.chase = chase;
         this.fleet = fleet;
-        this.horizontal = null;
-        this.pivotSet = false;
         this.hitCells = new ArrayList<>();
     }
 
@@ -37,53 +33,14 @@ public class ShipChaser {
         return fleet;
     }
 
-    public Boolean getHorizontal() {
-        return horizontal;
-    }
 
-    public void setHorizontal(Boolean horizontal) {
-        this.horizontal = horizontal;
-    }
 
-    public Boolean getPivotSet() {
-        return pivotSet;
-    }
-
-    public void setPivotSet(Boolean pivotSet) {
-        this.pivotSet = pivotSet;
-    }
 
     public void setHitCells(List<Coordinates> hitCells) {
         this.hitCells = hitCells;
     }
 
-    public void checkPossiblePivot() {
-        if (hitCells.size() != 2)
-            return;
 
-        Map<Integer, Integer> xCoordMap = new HashMap<>();
-        Map<Integer, Integer> yCoordMap = new HashMap<>();
-
-        for (Coordinates c : hitCells) {
-            int x = c.getxCoord();
-            int y = c.getyCoord();
-            xCoordMap.put(x, xCoordMap.getOrDefault(x, 0) + 1);
-            yCoordMap.put(y, yCoordMap.getOrDefault(y, 0) + 1);
-
-            if (xCoordMap.get(x) > 1) {
-                pivotSet = true;
-                this.horizontal = true;
-                return;
-            }
-
-            if (yCoordMap.get(y) > 1) {
-                pivotSet = true;
-                this.horizontal = false;
-                return;
-            }
-        }
-        pivotSet = false;
-    }
 
     public Coordinates chooseCandidate(Coordinates[] candidates, Coordinates direction) {
         Coordinates candidateA = candidates[0];
@@ -95,7 +52,7 @@ public class ShipChaser {
     }
 
     public Coordinates[] getEdgedCoordinatesFromList() {
-        if (horizontal)
+        if (hitCells.stream().mapToInt(Coordinates::getyCoord).distinct().count() == 1)
             hitCells.sort(Comparator.comparingInt(Coordinates::getxCoord));
         else
             hitCells.sort(Comparator.comparingInt(Coordinates::getyCoord));
@@ -115,8 +72,6 @@ public class ShipChaser {
         setChase(false);
         removeSankShip();
         clearHitList();
-        setPivotSet(false);
-        setHorizontal(false);
     }
 
     public void printFleet(){

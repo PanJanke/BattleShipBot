@@ -33,6 +33,9 @@ public class MainPage {
     @FindBy(xpath = "//div[contains(@class, 'game-over-loose')]")
     private List<WebElement> looseNotification;
 
+    @FindBy(xpath = "//div[contains(@class, 'rival-leave')]")
+    private List<WebElement> rivalLeaveNotification;
+
     @FindBy(xpath = "//li[@class='placeships-variant placeships-variant__randomly']/span")
     private WebElement randomFleetPlacingButton;
 
@@ -44,7 +47,13 @@ public class MainPage {
         PageFactory.initElements(driver, this);
         this.driver = driver;
     }
+    public void quit(){
+        driver.quit();
+    }
 
+    public boolean rivalLeaveChecker(){
+        return !rivalLeaveNotification.isEmpty() && rivalLeaveNotification.get(0).isDisplayed();
+    }
     public boolean winChecker() {
         return !winNotification.isEmpty() && winNotification.get(0).isDisplayed();
     }
@@ -54,7 +63,7 @@ public class MainPage {
     }
 
     public boolean isGameContinue() {
-        return !looseChecker() && !winChecker();
+        return !looseChecker() && !winChecker() && !rivalLeaveChecker();
     }
 
     public void reinitializeElements() {
