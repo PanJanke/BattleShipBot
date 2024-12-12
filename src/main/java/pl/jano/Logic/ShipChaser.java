@@ -2,17 +2,18 @@ package pl.jano.Logic;
 
 import java.util.ArrayList;
 import java.util.Comparator;
+import java.util.LinkedList;
 import java.util.List;
 
 public class ShipChaser {
     private boolean chase;
     private List<Integer> fleet;
-    private List<Coordinates> hitCells;
+    private LinkedList<Coordinates> hitCells;
 
     public ShipChaser(boolean chase, List<Integer> fleet) {
         this.chase = chase;
         this.fleet = new ArrayList<>(fleet);
-        this.hitCells = new ArrayList<>();
+        this.hitCells = new LinkedList<>();
     }
 
     public void clearHitList() {
@@ -37,7 +38,7 @@ public class ShipChaser {
 
 
     public void setHitCells(List<Coordinates> hitCells) {
-        this.hitCells = hitCells;
+        this.hitCells = (LinkedList<Coordinates>) hitCells;
     }
 
 

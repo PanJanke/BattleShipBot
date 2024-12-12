@@ -9,7 +9,8 @@ import org.openqa.selenium.firefox.FirefoxOptions;
 public class DriverFactory {
     public static WebDriver getDriver() {
         FirefoxOptions options = new FirefoxOptions();
-        options.setBinary("/usr/bin/firefox");
+        //options.setBinary("/usr/bin/firefox");
+        options.setBinary("C://Program Files/Mozilla Firefox/firefox.exe");
         WebDriverManager.firefoxdriver().setup();
         return new FirefoxDriver(options);
     }
